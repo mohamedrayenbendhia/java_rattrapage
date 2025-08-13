@@ -30,8 +30,8 @@
             <Insets top="40" right="40" bottom="40" left="40"/>
         </padding>
 
-        <Text styleClass="welcome-title" text="Bienvenue dans le Dashboard Admin"/>
-        <Text styleClass="welcome-subtitle" text="Gérez vos utilisateurs depuis ce panneau d'administration."/>
+        <Text styleClass="welcome-title" text="Welcome to Admin Dashboard"/>
+        <Text styleClass="welcome-subtitle" text="Manage your users from this administration panel."/>
     </VBox>
 
     <HBox spacing="20">
@@ -39,8 +39,8 @@
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
-            <Label fx:id="usersCountLabel" styleClass="stat-number" text="0"/>
-            <Label styleClass="stat-label" text="Total Utilisateurs"/>
+            <Label fx:id="superAdminCountLabel" styleClass="stat-number" text="0"/>
+            <Label styleClass="stat-label" text="Total Super Admin"/>
             <Button fx:id="userListButton" visible="false"/>
         </VBox>
 
@@ -48,22 +48,17 @@
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
-            <Label fx:id="activeUsersCountLabel" styleClass="stat-number" text="0"/>
-            <Label styleClass="stat-label" text="Utilisateurs Actifs"/>
+            <Label fx:id="adminCountLabel" styleClass="stat-number" text="0"/>
+            <Label styleClass="stat-label" text="Total Admin"/>
         </VBox>
 
         <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
-            <Label fx:id="newUsersCountLabel" styleClass="stat-number" text="0"/>
-            <Label styleClass="stat-label" text="Nouveaux cette semaine"/>
+            <Label fx:id="clientCountLabel" styleClass="stat-number" text="0"/>
+            <Label styleClass="stat-label" text="Total Client"/>
         </VBox>
-    </HBox>
-
-    <HBox spacing="20" alignment="CENTER">
-        <Button text="Gérer les Utilisateurs" onAction="#handleUserListClick" styleClass="action-button"/>
-        <Button text="Statistiques Utilisateurs" styleClass="action-button"/>
     </HBox>
         </VBox>
     </center>
