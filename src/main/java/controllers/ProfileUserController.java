@@ -321,6 +321,12 @@ public class ProfileUserController implements Initializable {
                 }
             }
 
+            // Vérifier que l'utilisateur a un mot de passe défini
+            if (currentUser.getPassword() == null || currentUser.getPassword().isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Error", "User password is not set. Please contact administrator.");
+                return;
+            }
+
             // Vérifier que le mot de passe actuel est correct
             if (!PasswordHasher.verifyPassword(currentPassword, currentUser.getPassword())) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Current password is incorrect");
@@ -330,19 +336,30 @@ public class ProfileUserController implements Initializable {
             try {
                 // Si un nouveau mot de passe est fourni, le mettre à jour
                 if (!newPassword.isEmpty()) {
-                    // Mettre à jour le mot de passe dans la base de données
-                    userService.updatePassword(currentUser.getId(), newPassword);
+                    // Demander confirmation avant de changer le mot de passe
+                    Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmAlert.setTitle("Password Change Confirmation");
+                    confirmAlert.setHeaderText("Confirm Password Change");
+                    confirmAlert.setContentText("Are you sure you want to change your password?");
+                    
+                    Optional<ButtonType> confirmResult = confirmAlert.showAndWait();
+                    if (confirmResult.isPresent() && confirmResult.get() == ButtonType.OK) {
+                        // Mettre à jour le mot de passe dans la base de données
+                        userService.updatePassword(currentUser.getId(), newPassword);
 
-                    // Mettre à jour le mot de passe dans l'objet utilisateur avec le hash
-                    String hashedNewPassword = PasswordHasher.hashPassword(newPassword);
-                    currentUser.setPassword(hashedNewPassword);
+                        // Mettre à jour le mot de passe dans l'objet utilisateur avec le hash
+                        String hashedNewPassword = PasswordHasher.hashPassword(newPassword);
+                        currentUser.setPassword(hashedNewPassword);
 
-                    // Mettre à jour l'utilisateur dans la session
-                    UserSession.getInstance().setCurrentUser(currentUser);
+                        // Mettre à jour l'utilisateur dans la session
+                        UserSession.getInstance().setCurrentUser(currentUser);
 
-                    showAlert(Alert.AlertType.INFORMATION, "Succès", "Votre mot de passe a été modifié avec succès !");
+                        showAlert(Alert.AlertType.INFORMATION, "Success", "Your password has been successfully changed!");
+                    } else {
+                        showAlert(Alert.AlertType.INFORMATION, "Information", "Password change cancelled");
+                    }
                 } else {
-                    showAlert(Alert.AlertType.INFORMATION, "Information", "Aucun changement de mot de passe effectué");
+                    showAlert(Alert.AlertType.INFORMATION, "Information", "No password change requested");
                 }
             } catch (SQLException e) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Error updating password: " + e.getMessage());

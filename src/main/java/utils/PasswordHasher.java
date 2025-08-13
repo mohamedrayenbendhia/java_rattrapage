@@ -29,6 +29,11 @@ public class PasswordHasher {
      * @return true si le mot de passe correspond
      */
     public static boolean verifyPassword(String password, String hash) {
+        // Vérifier que les paramètres ne sont pas null
+        if (password == null || hash == null) {
+            return false;
+        }
+        
         // Convertir $2y$ vers $2a$ pour la vérification avec BCrypt Java
         String hashForVerification = hash;
         if (hash.startsWith("$2y$")) {

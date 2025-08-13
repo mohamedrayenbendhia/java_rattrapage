@@ -69,6 +69,7 @@ public class AuthService {
                         user.setVerified(resultSet.getBoolean("is_verified"));
                         user.setBlocked(resultSet.getBoolean("is_blocked"));
                         user.setCreated_at(resultSet.getTimestamp("created_at"));
+                        user.setPassword(hashedPassword); // Important : assigner le mot de passe haché
                         user.setImage(resultSet.getString("image"));
                         user.setSecretKey(resultSet.getString("secret_key")); // Get 2FA secret key
 
@@ -146,6 +147,7 @@ public class AuthService {
                     user.setVerified(resultSet.getBoolean("is_verified"));
                     user.setBlocked(resultSet.getBoolean("is_blocked"));
                     user.setCreated_at(resultSet.getTimestamp("created_at"));
+                    user.setPassword(resultSet.getString("password")); // Important : récupérer le mot de passe
                     user.setImage(resultSet.getString("image"));
 
                     // Récupérer les rôles depuis le champ JSON

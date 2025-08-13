@@ -394,4 +394,51 @@ public class UserService {
         
         return json.toString();
     }
+
+    /**
+     * Update user role (used for role toggling by super admin)
+     * @param userId User ID
+     * @param newRole New role to assign
+     * @throws SQLException In case of SQL error
+     */
+    public void updateUserRole(int userId, String newRole) throws SQLException {
+        // Create a list with the single new role
+        List<String> roles = new ArrayList<>();
+        roles.add(newRole);
+        
+        // Convert to JSON and update in database
+        String rolesJson = convertRolesToJson(roles);
+        String query = "UPDATE user SET roles = ? WHERE id = ?";
+        
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, rolesJson);
+            statement.setInt(2, userId);
+            statement.executeUpdate();
+        }
+    }
+
+    /**
+     * Delete user (only regular users can be deleted, not admins or super admins)
+     * @param userId User ID to delete
+     * @throws SQLException In case of SQL error
+     * @throws IllegalArgumentException If trying to delete admin or super admin
+     */
+    public void deleteUser(int userId) throws SQLException, IllegalArgumentException {
+        // First check if the user is a client (ROLE_USER)
+        User user = getUserById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        
+        // Only clients (ROLE_USER) can be deleted
+        if (!user.getRole().contains("ROLE_USER") || user.getRole().contains("ROLE_ADMIN") || user.getRole().contains("ROLE_SUPER_ADMIN")) {
+            throw new IllegalArgumentException("Only client users can be deleted");
+        }
+        
+        String query = "DELETE FROM user WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            statement.executeUpdate();
+        }
+    }
 }
