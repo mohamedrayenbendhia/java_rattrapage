@@ -73,14 +73,14 @@ public class ContactController implements Initializable {
             if (holidays.isEmpty()) {
                 holidaysTextArea.setText("No upcoming holidays found.");
             } else {
-                StringBuilder holidayText = new StringBuilder("Upcoming Holidays in Tunisia:\n\n");
+                StringBuilder holidayText = new StringBuilder();
                 for (String holiday : holidays) {
                     holidayText.append("• ").append(holiday).append("\n");
                 }
                 holidaysTextArea.setText(holidayText.toString());
             }
             holidaysTextArea.setEditable(false);
-            holidaysTextArea.setStyle("-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-radius: 5;");
+            holidaysTextArea.setStyle("-fx-background-color: #f8f9fa; -fx-border-color: transparent; -fx-focus-color: transparent; -fx-faint-focus-color: transparent;");
         } catch (Exception e) {
             holidaysTextArea.setText("Unable to load holiday information at this time.");
             holidaysTextArea.setEditable(false);

@@ -7,33 +7,30 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ContactController">
    <center>
-      <VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #f8f9fa;">
+      <HBox spacing="30.0" style="-fx-background-color: #f8f9fa;">
          <padding>
             <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
          </padding>
          
-         <!-- Header -->
-         <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-            <padding>
-               <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
-            </padding>
-            <Text fill="#2c3e50" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Us" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="28.0" />
-               </font>
-            </Text>
-            <Text fill="#6c757d" strokeType="OUTSIDE" strokeWidth="0.0" text="We're here to help! Send us a message and we'll respond as soon as possible." textAlignment="CENTER">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-         </VBox>
-
-         <!-- Contact Form -->
-         <VBox spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" maxWidth="600.0">
+         <!-- Left side - Contact Form -->
+         <VBox spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" prefWidth="500.0" HBox.hgrow="ALWAYS">
             <padding>
                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
             </padding>
+            
+            <!-- Header -->
+            <VBox alignment="CENTER" spacing="10.0">
+               <Text fill="#2c3e50" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Us" textAlignment="CENTER">
+                  <font>
+                     <Font name="System Bold" size="28.0" />
+                  </font>
+               </Text>
+               <Text fill="#6c757d" strokeType="OUTSIDE" strokeWidth="0.0" text="We're here to help! Send us a message and we'll respond as soon as possible." textAlignment="CENTER">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Text>
+            </VBox>
 
             <!-- Email Field -->
             <VBox spacing="5.0">
@@ -84,20 +81,6 @@
                </font>
             </Label>
 
-            <!-- Holidays Information -->
-            <VBox spacing="5.0">
-               <Label text="Holiday Information:" textFill="#495057">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-               </Label>
-               <TextArea fx:id="holidaysTextArea" prefRowCount="4" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ced4da;" wrapText="true">
-                  <font>
-                     <Font size="12.0" />
-                  </font>
-               </TextArea>
-            </VBox>
-
             <!-- Buttons -->
             <HBox alignment="CENTER" spacing="15.0">
                <Button fx:id="sendButton" mnemonicParsing="false" prefWidth="120.0" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold; -fx-padding: 10 20 10 20;" text="Send Message">
@@ -118,8 +101,72 @@
                   <Font size="13.0" />
                </font>
             </Label>
-
          </VBox>
-      </VBox>
+         
+         <!-- Right side - Holiday Information -->
+         <VBox spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" prefWidth="300.0">
+            <padding>
+               <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
+            </padding>
+            
+            <!-- Holiday Header -->
+            <VBox alignment="CENTER" spacing="10.0">
+               <Text fill="#2c3e50" strokeType="OUTSIDE" strokeWidth="0.0" text="Important Information" textAlignment="CENTER">
+                  <font>
+                     <Font name="System Bold" size="18.0" />
+                  </font>
+               </Text>
+               <Text fill="#6c757d" strokeType="OUTSIDE" strokeWidth="0.0" text="Processing times and holidays" textAlignment="CENTER">
+                  <font>
+                     <Font size="12.0" />
+                  </font>
+               </Text>
+            </VBox>
+            
+            <!-- Processing Time Info -->
+            <VBox spacing="8.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 8; -fx-padding: 15;">
+               <Label text="⏱️ Processing Time" textFill="#495057">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Label>
+               <Label text="48 hours maximum" textFill="#6c757d" wrapText="true">
+                  <font>
+                     <Font size="12.0" />
+                  </font>
+               </Label>
+            </VBox>
+            
+            <!-- Weekend Notice -->
+            <VBox spacing="8.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 8; -fx-padding: 15;">
+               <Label text="📅 Weekends &amp; Holidays" textFill="#495057">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Label>
+               <Label text="No processing during weekends and holidays" textFill="#6c757d" wrapText="true">
+                  <font>
+                     <Font size="12.0" />
+                  </font>
+               </Label>
+            </VBox>
+
+            <!-- Holidays Information -->
+            <VBox spacing="8.0">
+               <Label text="🎉 Upcoming Holidays 2025" textFill="#495057">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Label>
+               <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;">
+                  <TextArea fx:id="holidaysTextArea" prefRowCount="8" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-radius: 5; -fx-background-radius: 5;" wrapText="true">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </TextArea>
+               </ScrollPane>
+            </VBox>
+         </VBox>
+      </HBox>
    </center>
 </BorderPane>
