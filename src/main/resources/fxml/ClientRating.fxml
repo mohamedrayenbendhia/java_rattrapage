@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ClientRatingController">
+   <top>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
+               <children>
+                  <Label text="Client Rating System" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button fx:id="logoutButton" onAction="#handleLogout" text="Logout" />
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <VBox spacing="20.0">
+         <children>
+            <!-- Statistics Section -->
+            <HBox alignment="CENTER" spacing="30.0">
+               <children>
+                  <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: lightblue; -fx-padding: 20;">
+                     <children>
+                        <Label fx:id="ratingsGivenLabel" text="0" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+                        <Label text="Ratings Given" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: lightgreen; -fx-padding: 20;">
+                     <children>
+                        <Label fx:id="ratingsReceivedLabel" text="0" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+                        <Label text="Ratings Received" />
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+               </padding>
+            </HBox>
+            
+            <!-- Main Content -->
+            <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE">
+               <tabs>
+                  <!-- Client List Tab -->
+                  <Tab text="Client List">
+                     <content>
+                        <VBox spacing="15.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                 <children>
+                                    <Label text="Other Clients" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                                    <Region HBox.hgrow="ALWAYS" />
+                                    <Button fx:id="refreshButton" onAction="#handleRefresh" text="Refresh" />
+                                 </children>
+                              </HBox>
+                              
+                              <TableView fx:id="clientsTable">
+                                 <columns>
+                                    <TableColumn fx:id="nameColumn" minWidth="150.0" prefWidth="200.0" text="Name" />
+                                    <TableColumn fx:id="emailColumn" minWidth="200.0" prefWidth="250.0" text="Email" />
+                                    <TableColumn fx:id="phoneColumn" minWidth="100.0" prefWidth="120.0" text="Phone" />
+                                    <TableColumn fx:id="averageRatingColumn" minWidth="100.0" prefWidth="120.0" text="Avg Rating" />
+                                    <TableColumn fx:id="actionColumn" minWidth="120.0" prefWidth="150.0" text="Action" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                           <padding>
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </Tab>
+                  
+                  <!-- My Ratings Tab -->
+                  <Tab text="My Ratings">
+                     <content>
+                        <VBox spacing="15.0">
+                           <children>
+                              <Label text="Ratings I've Given" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                              
+                              <TableView fx:id="givenRatingsTable">
+                                 <columns>
+                                    <TableColumn fx:id="ratedUserColumn" minWidth="150.0" prefWidth="200.0" text="User Rated" />
+                                    <TableColumn fx:id="starsGivenColumn" minWidth="80.0" prefWidth="100.0" text="Stars" />
+                                    <TableColumn fx:id="commentGivenColumn" minWidth="200.0" prefWidth="300.0" text="Comment" />
+                                    <TableColumn fx:id="dateGivenColumn" minWidth="120.0" prefWidth="150.0" text="Date" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                           <padding>
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </Tab>
+                  
+                  <!-- Received Ratings Tab -->
+                  <Tab text="Ratings Received">
+                     <content>
+                        <VBox spacing="15.0">
+                           <children>
+                              <Label text="Ratings I've Received" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+                              
+                              <TableView fx:id="receivedRatingsTable">
+                                 <columns>
+                                    <TableColumn fx:id="raterUserColumn" minWidth="150.0" prefWidth="200.0" text="Rated By" />
+                                    <TableColumn fx:id="starsReceivedColumn" minWidth="80.0" prefWidth="100.0" text="Stars" />
+                                    <TableColumn fx:id="commentReceivedColumn" minWidth="200.0" prefWidth="300.0" text="Comment" />
+                                    <TableColumn fx:id="dateReceivedColumn" minWidth="120.0" prefWidth="150.0" text="Date" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                           <padding>
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
