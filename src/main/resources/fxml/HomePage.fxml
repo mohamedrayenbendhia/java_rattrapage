@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+
+<?import java.net.URL?>
+<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Home">
+    <!-- Style CSS -->
+    <stylesheets>
+        <URL value="@../styles/home.css" />
+    </stylesheets>
+
+    <!-- Top Bar -->
+    <top>
+        <HBox styleClass="top-bar" alignment="CENTER_LEFT">
+            <ImageView fitHeight="40" fitWidth="40">
+
+            </ImageView>
+            <Label text="UserManager+" styleClass="app-title" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="profile" styleClass="green-btn" onAction="#handleprofile"/>
+
+            <Button text="Déconnexion" styleClass="logout-btn"/>
+
+        </HBox>
+    </top>
+
+    <!-- Main Content -->
+    <center>
+        <VBox spacing="20" alignment="TOP_CENTER" styleClass="main-content">
+            <!-- Welcome Section -->
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="welcome-section">
+                <VBox spacing="5">
+                    <Label text="Bienvenue," styleClass="welcome-label" />
+                    <Label fx:id="usernameLabel" styleClass="username-label" />
+                    <Label text="Gérez vos utilisateurs et leurs profils" styleClass="subtitle-label" />
+                </VBox>
+                <ImageView fitHeight="120" fitWidth="120" preserveRatio="true">
+
+                </ImageView>
+            </HBox>
+
+            <!-- Quick Stats -->
+            <HBox spacing="20" alignment="CENTER" styleClass="stats-container">
+                <VBox styleClass="stat-card" alignment="CENTER" spacing="5">
+                    <Label fx:id="usersCountLabel" styleClass="stat-number" />
+                    <Label text="Utilisateurs" styleClass="stat-label" />
+                </VBox>
+                <VBox styleClass="stat-card" alignment="CENTER" spacing="5">
+                    <Label fx:id="activeUsersCountLabel" styleClass="stat-number" />
+                    <Label text="Utilisateurs Actifs" styleClass="stat-label" />
+                </VBox>
+                <VBox styleClass="stat-card" alignment="CENTER" spacing="5">
+                    <Label fx:id="newUsersCountLabel" styleClass="stat-number" />
+                    <Label text="Nouveaux Utilisateurs" styleClass="stat-label" />
+                </VBox>
+            </HBox>
+
+            <!-- Quick Actions -->
+            <GridPane hgap="20" vgap="20" alignment="CENTER" styleClass="actions-grid">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="ALWAYS" fillWidth="true" />
+                    <ColumnConstraints hgrow="ALWAYS" fillWidth="true" />
+                </columnConstraints>
+
+                <!-- Row 1 -->
+                <Button text="Ajouter Utilisateur" styleClass="action-btn"  GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button text="Statistiques Utilisateurs" styleClass="action-btn"  GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <!-- Row 2 -->
+                <Button text="Liste des Utilisateurs" styleClass="action-btn"  GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button text="Profils Utilisateurs" styleClass="action-btn"  GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </GridPane>
+
+            <!-- Recent Users -->
+            <VBox spacing="10" styleClass="recent-section">
+                <Label text="Utilisateurs récents" styleClass="section-title" />
+                <TableView fx:id="recentUsersTable" styleClass="recent-table" >
+                    <columns>
+                        <TableColumn text="Nom" fx:id="userNameColumn" />
+                        <TableColumn text="Email" fx:id="userEmailColumn" />
+                        <TableColumn text="Date d'inscription" fx:id="registrationDateColumn" />
+                        <TableColumn text="Statut" fx:id="statusColumn" />
+                    </columns>
+                </TableView>
+            </VBox>
+        </VBox>
+    </center>
+
+    <!-- Status Bar -->
+    <bottom>
+        <HBox styleClass="status-bar" alignment="CENTER">
+            <Label fx:id="statusLabel" text="Système prêt" styleClass="status-text" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label text="© 2025 UserManager+ - Tous droits réservés" styleClass="copyright-text" />
+        </HBox>
+    </bottom>
+</BorderPane>

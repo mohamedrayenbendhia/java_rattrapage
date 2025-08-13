@@ -1,0 +1,254 @@
+/* Couleurs de base */
+.root {
+    -fx-primary-color: #3498db;
+    -fx-secondary-color: #2980b9;
+    -fx-accent-color: #2ecc71;
+    -fx-danger-color: #e74c3c;
+    -fx-warning-color: #f39c12;
+    -fx-light-color: #ecf0f1;
+    -fx-dark-color: #2c3e50;
+    -fx-grey-color: #95a5a6;
+    -fx-background-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+}
+
+/* Styles pour les formulaires */
+.form-container {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);
+    -fx-padding: 30px;
+}
+
+.form-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-dark-color;
+    -fx-padding: 0 0 20 0;
+}
+
+.form-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-grey-color;
+    -fx-padding: 0 0 20 0;
+}
+
+/* Styles pour les champs de texte */
+.text-field, .password-field, .combo-box {
+    -fx-background-color: -fx-light-color;
+    -fx-background-radius: 5px;
+    -fx-border-color: transparent;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: -fx-grey-color;
+}
+
+.text-field:focused, .password-field:focused, .combo-box:focused {
+    -fx-background-color: white;
+    -fx-border-color: -fx-primary-color;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(52, 152, 219, 0.3), 5, 0, 0, 0);
+}
+
+/* Styles pour les labels */
+.form-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-dark-color;
+    -fx-font-weight: bold;
+}
+
+/* Styles pour les boutons */
+.primary-button {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: derive(-fx-primary-color, 10%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+.primary-button:pressed {
+    -fx-background-color: derive(-fx-primary-color, -10%);
+}
+
+.secondary-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary-color;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-border-color: -fx-primary-color;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: rgba(52, 152, 219, 0.1);
+}
+
+.secondary-button:pressed {
+    -fx-background-color: rgba(52, 152, 219, 0.2);
+}
+
+.danger-button {
+    -fx-background-color: -fx-danger-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.danger-button:hover {
+    -fx-background-color: derive(-fx-danger-color, 10%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+.success-button {
+    -fx-background-color: -fx-accent-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.success-button:hover {
+    -fx-background-color: derive(-fx-accent-color, 10%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+/* Styles pour les liens */
+.hyperlink {
+    -fx-text-fill: -fx-primary-color;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.hyperlink:hover {
+    -fx-text-fill: derive(-fx-primary-color, 20%);
+    -fx-underline: true;
+}
+
+/* Styles pour les icônes */
+.icon-container {
+    -fx-background-color: -fx-primary-color;
+    -fx-background-radius: 5px 0 0 5px;
+    -fx-padding: 10px;
+    -fx-alignment: center;
+}
+
+.input-container {
+    -fx-spacing: 0;
+}
+
+/* Styles pour les champs avec icônes */
+.input-with-icon {
+    -fx-background-radius: 0 5px 5px 0;
+}
+
+/* Styles pour le profil utilisateur */
+.profile-container {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);
+    -fx-padding: 30px;
+}
+
+.profile-header {
+    -fx-padding: 0 0 20 0;
+    -fx-border-color: transparent transparent -fx-light-color transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.profile-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-dark-color;
+}
+
+.profile-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: -fx-grey-color;
+}
+
+.profile-image-container {
+    -fx-background-color: -fx-light-color;
+    -fx-background-radius: 100%;
+    -fx-border-radius: 100%;
+    -fx-border-color: -fx-primary-color;
+    -fx-border-width: 3px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-dark-color;
+    -fx-padding: 20 0 10 0;
+}
+
+.form-group {
+    -fx-spacing: 5;
+}
+
+.form-row {
+    -fx-spacing: 20;
+}
+
+/* Styles pour les séparateurs */
+.separator {
+    -fx-background-color: -fx-light-color;
+}
+
+/* Styles pour les onglets */
+.tab-pane {
+    -fx-tab-min-width: 100px;
+}
+
+.tab {
+    -fx-background-color: transparent;
+    -fx-padding: 10 20;
+}
+
+.tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab:selected {
+    -fx-background-color: white;
+    -fx-background-radius: 5 5 0 0;
+}
+
+.tab-label {
+    -fx-text-fill: -fx-dark-color;
+    -fx-font-weight: bold;
+}
+
+/* Styles pour les cartes */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+    -fx-padding: 20px;
+}
+
+.card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+}
+
+/* Animation pour les boutons */
+.animated-button {
+    -fx-transition: -fx-background-color 0.3s, -fx-effect 0.3s;
+}

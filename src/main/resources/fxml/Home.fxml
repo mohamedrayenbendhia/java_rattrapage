@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.HomeController"
+            prefHeight="700.0" prefWidth="1000.0">
+    
+    <top>
+        <MenuBar>
+            <Menu text="Fichier">
+                <MenuItem text="Déconnexion" onAction="#handleLogout"/>
+                <SeparatorMenuItem />
+                <MenuItem text="Quitter" onAction="#handleExit"/>
+            </Menu>
+        </MenuBar>
+    </top>
+    
+    <center>
+        <VBox alignment="CENTER" spacing="20.0">
+            <padding>
+                <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+            </padding>
+            
+            <Text text="Bienvenue sur la page d'accueil" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            
+            <Text fx:id="welcomeText" text="Vous êtes connecté en tant que..." style="-fx-font-size: 16px;"/>
+            
+            <HBox alignment="CENTER" spacing="20.0">
+                <Button text="Événements" onAction="#handleEvents"/>
+                <Button text="Profil" onAction="#handleProfile"/>
+            </HBox>
+        </VBox>
+    </center>
+    
+</BorderPane>

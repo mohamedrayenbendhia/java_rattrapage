@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.Admin.AdminMainController"
+            prefHeight="700.0" prefWidth="1000.0">
+    <left>
+        <fx:include fx:id="sidebar" source="AdminSidebar.fxml"/>
+    </left>
+    <!-- Le contenu central sera chargé dynamiquement -->
+</BorderPane>

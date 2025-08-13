@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="controllers.Admin.UserListController"
+           stylesheets="@../../styles/admin-styles.css"
+           prefHeight="700.0" prefWidth="1000.0">
+
+    <left>
+        <fx:include fx:id="sidebar" source="AdminSidebar.fxml"/>
+    </left>
+
+    <center>
+        <VBox spacing="20">
+
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Button fx:id="backButton" text="Back" onAction="#handleBack" styleClass="action-button, back-button"/>
+        <Label styleClass="page-title" text="User List"/>
+        <HBox HBox.hgrow="ALWAYS"/>
+        <Button fx:id="addUserButton" text="Add User" onAction="#handleAddUser" styleClass="action-button, success-button"/>
+        <Button fx:id="refreshButton" text="Refresh" onAction="#handleRefresh" styleClass="action-button"/>
+    </HBox>
+
+    <Label styleClass="section-title" text="Users"/>
+    <ListView fx:id="userListView" VBox.vgrow="ALWAYS" styleClass="custom-list-view"/>
+
+    <Label fx:id="messageLabel" text="User list will be displayed here" styleClass="info-message"/>
+        </VBox>
+    </center>
+</BorderPane>

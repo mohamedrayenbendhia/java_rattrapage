@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="controllers.Admin.AdminDashboardController"
+           stylesheets="@../../styles/admin-styles.css"
+           prefHeight="700.0" prefWidth="1000.0">
+
+    <left>
+        <fx:include fx:id="sidebar" source="AdminSidebar.fxml"/>
+    </left>
+
+    <center>
+        <VBox spacing="20" alignment="CENTER">
+
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30"/>
+    </padding>
+
+    <VBox styleClass="welcome-card" alignment="CENTER" spacing="15">
+        <padding>
+            <Insets top="40" right="40" bottom="40" left="40"/>
+        </padding>
+
+        <Text styleClass="welcome-title" text="Bienvenue dans le Dashboard Admin"/>
+        <Text styleClass="welcome-subtitle" text="Gérez vos utilisateurs depuis ce panneau d'administration."/>
+    </VBox>
+
+    <HBox spacing="20">
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" onMouseClicked="#handleUserListClick">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label fx:id="usersCountLabel" styleClass="stat-number" text="0"/>
+            <Label styleClass="stat-label" text="Total Utilisateurs"/>
+            <Button fx:id="userListButton" visible="false"/>
+        </VBox>
+
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label fx:id="activeUsersCountLabel" styleClass="stat-number" text="0"/>
+            <Label styleClass="stat-label" text="Utilisateurs Actifs"/>
+        </VBox>
+
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label fx:id="newUsersCountLabel" styleClass="stat-number" text="0"/>
+            <Label styleClass="stat-label" text="Nouveaux cette semaine"/>
+        </VBox>
+    </HBox>
+
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="Gérer les Utilisateurs" onAction="#handleUserListClick" styleClass="action-button"/>
+        <Button text="Statistiques Utilisateurs" styleClass="action-button"/>
+    </HBox>
+        </VBox>
+    </center>
+</BorderPane>

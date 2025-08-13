@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.*?>
+<?import java.net.URL?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.ProfileUserController"
+            prefHeight="700.0" prefWidth="1000.0">
+
+    <!-- Styles CSS -->
+    <stylesheets>
+        <URL value="@../styles/forms.css" />
+    </stylesheets>
+
+    <top>
+        <HBox style="-fx-background-color: #3498db; -fx-padding: 15 30;" alignment="CENTER_LEFT" spacing="20">
+            <Text text="User Profile" style="-fx-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="backToDashboardButton" text="Back to Dashboard" style="-fx-background-color: white; -fx-text-fill: #3498db; -fx-font-weight: bold; -fx-padding: 8 15; -fx-background-radius: 5px;" onAction="#handleBackToDashboard"/>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+            <VBox spacing="20" style="-fx-padding: 20;">
+                <VBox styleClass="profile-container" spacing="20">
+                    <!-- Photo de profil -->
+                    <HBox alignment="CENTER" spacing="20">
+                        <VBox alignment="CENTER" spacing="10">
+                            <ImageView fx:id="profileImage" fitHeight="150" fitWidth="150" preserveRatio="true" styleClass="profile-image-container" onMouseClicked="#handleChangeProfileImage"/>
+                            <Button text="Change Photo" styleClass="secondary-button" onAction="#handleChangeProfileImage"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Text styleClass="profile-title" text="Personal Information"/>
+                            <Text styleClass="profile-subtitle" text="Modify your personal information below"/>
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="15">
+                        <!-- Nom complet -->
+                        <VBox spacing="5" styleClass="form-group">
+                            <Label text="Full Name" styleClass="form-label"/>
+                            <TextField fx:id="nameField" promptText="Your full name" styleClass="text-field"/>
+                        </VBox>
+
+                        <!-- Email -->
+                        <VBox spacing="5" styleClass="form-group">
+                            <Label text="Email" styleClass="form-label"/>
+                            <TextField fx:id="emailField" promptText="Your email address" styleClass="text-field"/>
+                        </VBox>
+
+                        <!-- Téléphone -->
+                        <VBox spacing="5" styleClass="form-group">
+                            <Label text="Phone" styleClass="form-label"/>
+                            <TextField fx:id="phoneField" promptText="Your phone number" styleClass="text-field"/>
+                        </VBox>
+
+                        <!-- Statut du compte -->
+                        <HBox spacing="20">
+                            <VBox spacing="5" styleClass="form-group" HBox.hgrow="ALWAYS">
+                                <Label text="Verification Status" styleClass="form-label"/>
+                                <Label fx:id="verificationStatusLabel" styleClass="form-label"/>
+                            </VBox>
+                            
+                            <VBox spacing="5" styleClass="form-group" HBox.hgrow="ALWAYS">
+                                <Label text="Account Status" styleClass="form-label"/>
+                                <Label fx:id="accountStatusLabel" styleClass="form-label"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- Boutons d'action -->
+                <VBox spacing="20" alignment="CENTER">
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button fx:id="saveButton" text="Save Changes" styleClass="success-button" onAction="#handleSave"/>
+                        <Button fx:id="cancelButton" text="Cancel" styleClass="danger-button" onAction="#handleCancel"/>
+                    </HBox>
+
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button fx:id="changePasswordButton" text="Change Password" styleClass="secondary-button" onAction="#handleChangePassword"/>
+                        <Button fx:id="setup2FAButton" text="Setup Two-Factor Authentication" styleClass="secondary-button" onAction="#handleSetup2FA"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

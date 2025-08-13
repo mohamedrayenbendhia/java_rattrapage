@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.RegisterController"
+            prefHeight="700.0" prefWidth="1000.0">
+
+    <!-- Styles CSS -->
+    <stylesheets>
+        <URL value="@../styles/forms.css" />
+    </stylesheets>
+
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-border-color: transparent;">
+            <VBox alignment="CENTER" spacing="20.0" styleClass="form-container">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                </padding>
+
+                <Text styleClass="form-title" text="Registration"/>
+                <Text styleClass="form-subtitle" text="Fill out the form to create your account"/>
+
+                <VBox spacing="15">
+                    <!-- Name -->
+                    <VBox spacing="5" styleClass="form-group">
+                        <Label text="Name" styleClass="form-label"/>
+                        <TextField fx:id="nameField" promptText="Your name" styleClass="text-field"/>
+                    </VBox>
+
+                    <!-- Email -->
+                    <VBox spacing="5" styleClass="form-group">
+                        <Label text="Email" styleClass="form-label"/>
+                        <TextField fx:id="emailField" promptText="Your email address" styleClass="text-field"/>
+                    </VBox>
+
+                    <!-- Phone Number -->
+                    <VBox spacing="5" styleClass="form-group">
+                        <Label text="Phone Number" styleClass="form-label"/>
+                        <TextField fx:id="phoneNumberField" promptText="Your phone number (8 digits)" styleClass="text-field"/>
+                    </VBox>
+
+                    <!-- Password -->
+                    <VBox spacing="5" styleClass="form-group">
+                        <Label text="Password" styleClass="form-label"/>
+                        <PasswordField fx:id="passwordField" promptText="Create a secure password" styleClass="text-field"/>
+                    </VBox>
+
+                    <!-- Repeat Password -->
+                    <VBox spacing="5" styleClass="form-group">
+                        <Label text="Repeat Password" styleClass="form-label"/>
+                        <PasswordField fx:id="repeatPasswordField" promptText="Confirm your password" styleClass="text-field"/>
+                    </VBox>
+
+                </VBox>
+
+                <!-- Register Button -->
+                <Button fx:id="registerButton" text="CREATE MY ACCOUNT" styleClass="success-button"
+                        onAction="#handleRegister" maxWidth="Infinity"/>
+
+                <!-- Login Link -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Text text="Already registered?" style="-fx-fill: -fx-dark-color;"/>
+                    <Hyperlink fx:id="loginLink" text="Sign in" onAction="#handleLogin"/>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.LoginController"
+            prefHeight="700.0" prefWidth="1000.0">
+
+    <!-- Styles CSS -->
+    <stylesheets>
+        <URL value="@../styles/forms.css" />
+    </stylesheets>
+
+    <center>
+        <VBox alignment="CENTER" spacing="20.0" styleClass="form-container">
+            <padding>
+                <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+            </padding>
+
+            <Text styleClass="form-title" text="Connexion"/>
+            <Text styleClass="form-subtitle" text="Entrez vos identifiants pour vous connecter"/>
+
+            <VBox spacing="15">
+                <!-- Champ Email -->
+                <VBox spacing="5" styleClass="form-group">
+                    <Label text="Email" styleClass="form-label"/>
+                    <TextField fx:id="emailField" promptText="Entrez votre email" styleClass="text-field"/>
+                </VBox>
+
+                <!-- Champ Mot de passe -->
+                <VBox spacing="5" styleClass="form-group">
+                    <Label text="Mot de passe" styleClass="form-label"/>
+                    <PasswordField fx:id="passwordField" promptText="Entrez votre mot de passe" styleClass="text-field"/>
+                </VBox>
+
+                <!-- Option Se souvenir de moi -->
+                <HBox alignment="CENTER_LEFT">
+                    <CheckBox text="Se souvenir de moi" style="-fx-text-fill: -fx-dark-color;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Hyperlink fx:id="forgotPasswordLink" text="Mot de passe oublié ?" style="-fx-border-color: transparent;" onAction="#handleForgotPassword"/>
+                </HBox>
+            </VBox>
+
+            <!-- Bouton de connexion -->
+            <Button fx:id="loginButton" text="SE CONNECTER" styleClass="primary-button"
+                    onAction="#handleLogin" maxWidth="Infinity"/>
+
+            <!-- Lien d'inscription -->
+            <HBox alignment="CENTER" spacing="10">
+                <Text text="Pas encore inscrit ?" style="-fx-fill: -fx-dark-color;"/>
+                <Hyperlink fx:id="registerLink" text="Créer un compte" onAction="#handleRegister"/>
+            </HBox>
+        </VBox>
+    </center>
+
+</BorderPane>

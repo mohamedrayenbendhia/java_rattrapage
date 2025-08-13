@@ -1,0 +1,170 @@
+/* Couleurs de base */
+.root {
+    -fx-primary-color: #3498db;
+    -fx-secondary-color: #2980b9;
+    -fx-accent-color: #2ecc71;
+    -fx-danger-color: #e74c3c;
+    -fx-warning-color: #f39c12;
+    -fx-light-color: #ecf0f1;
+    -fx-dark-color: #2c3e50;
+}
+
+/* Barre du haut */
+.top-bar {
+    -fx-background-color: -fx-dark-color;
+    -fx-padding: 10 20;
+}
+
+.app-title {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 0 10;
+}
+
+.logout-btn {
+    -fx-background-color: -fx-danger-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 5 15;
+    -fx-background-radius: 5;
+}
+
+/* Contenu principal */
+.main-content {
+    -fx-padding: 20;
+    -fx-background-color: -fx-light-color;
+}
+
+.welcome-section {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-background-radius: 10;
+}
+
+.welcome-label {
+    -fx-text-fill: -fx-dark-color;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.username-label {
+    -fx-text-fill: -fx-primary-color;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.subtitle-label {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 14px;
+}
+
+/* Cartes de statistiques */
+.stats-container {
+    -fx-padding: 0 0 20 0;
+}
+
+.stat-card {
+    -fx-background-color: white;
+    -fx-padding: 15 25;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+    -fx-min-width: 120px;
+}
+
+.stat-number {
+    -fx-text-fill: -fx-primary-color;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.stat-label {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 14px;
+}
+
+/* Boutons d'action */
+.actions-grid {
+    -fx-padding: 0 0 20 0;
+}
+
+.action-btn {
+    -fx-background-color: white;
+    -fx-text-fill: -fx-dark-color;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 15 20;
+    -fx-background-radius: 10;
+
+    -fx-alignment: CENTER_LEFT;
+    -fx-content-display: LEFT;
+    -fx-graphic-text-gap: 15;
+}
+
+.action-btn:hover {
+    -fx-background-color: #f5f5f5;
+}
+
+/* Section utilisateurs récents */
+.recent-section {
+    -fx-padding: 20;
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.section-title {
+    -fx-text-fill: -fx-dark-color;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+.green-btn {
+    -fx-background-color: #4CAF50; /* Vert */
+    -fx-text-fill: white;          /* Couleur du texte */
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+}
+
+
+.recent-table {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.recent-table .column-header {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.recent-table .table-row-cell {
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #ecf0f1;
+}
+
+.recent-table .table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.recent-table .table-row-cell:selected {
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: white;
+}
+
+/* Barre de statut */
+.status-bar {
+    -fx-background-color: -fx-dark-color;
+    -fx-padding: 8 20;
+}
+
+.status-text {
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+}
+
+.copyright-text {
+    -fx-text-fill: #bdc3c7;
+    -fx-font-size: 12px;
+}

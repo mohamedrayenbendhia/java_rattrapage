@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import java.net.URL?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.controller2fa"
+            prefHeight="500.0" prefWidth="600.0"
+            style="-fx-background-color: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);">
+
+    <!-- Styles CSS -->
+    <stylesheets>
+        <URL value="@../styles/forms.css" />
+    </stylesheets>
+
+    <center>
+        <VBox alignment="CENTER" spacing="20.0" styleClass="form-container" maxWidth="500">
+            <padding>
+                <Insets top="30.0" right="40.0" bottom="30.0" left="40.0"/>
+            </padding>
+
+            <Text text="Configuration de l'authentification à deux facteurs"
+                  style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: #2c3e50; -fx-text-alignment: center;"/>
+
+            <Text text="Scannez le code QR avec votre application d'authentification (Google Authenticator, Authy, etc.)"
+                  style="-fx-font-size: 14px; -fx-fill: #7f8c8d; -fx-text-alignment: center;" wrappingWidth="400"/>
+
+            <VBox alignment="CENTER" spacing="10">
+                <Label text="Utilisateur:" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+                <Label fx:id="userNameLabel" style="-fx-text-fill: #3498db;"/>
+
+                <Label text="Email:" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+                <Label fx:id="userEmailLabel" style="-fx-text-fill: #3498db;"/>
+            </VBox>
+
+            <!-- Zone pour le QR Code -->
+            <VBox alignment="CENTER" spacing="10">
+                <ImageView fx:id="imageView" fitHeight="200" fitWidth="200" preserveRatio="true"/>
+
+               </VBox>
+
+            <!-- Zone pour entrer le code -->
+            <VBox spacing="10" alignment="CENTER">
+                <Label text="Entrez le code à 6 chiffres généré par votre application:"
+                       style="-fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+                <TextField fx:id="codeField" promptText="Code à 6 chiffres" maxWidth="200"
+                          style="-fx-background-color: #ecf0f1; -fx-padding: 10px; -fx-background-radius: 5px; -fx-alignment: center; -fx-font-size: 18px;"/>
+            </VBox>
+
+            <!-- Bouton de validation -->
+            <Button text="VALIDER" onAction="#handleValidate2FA"
+                    style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 12px; -fx-background-radius: 5px;"
+                    maxWidth="200"/>
+
+            <!-- Instructions supplémentaires -->
+            <Text text="Note: L'authentification à deux facteurs ajoute une couche de sécurité supplémentaire à votre compte. Conservez précieusement votre clé de secours."
+                  style="-fx-font-size: 12px; -fx-fill: #e74c3c; -fx-text-alignment: center;" wrappingWidth="400"/>
+        </VBox>
+    </center>
+
+</BorderPane>
