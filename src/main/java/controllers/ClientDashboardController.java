@@ -77,7 +77,7 @@ public class ClientDashboardController implements Initializable {
         try {
             User currentUser = entities.UserSession.getInstance().getCurrentUser();
             if (currentUser != null) {
-                userInfoText.setText("Connecté en tant que: " + currentUser.getName());
+                userInfoText.setText("Logged in as: " + currentUser.getName());
             }
         } catch (Exception e) {
             System.out.println("Error loading user profile: " + e.getMessage());
@@ -215,7 +215,7 @@ public class ClientDashboardController implements Initializable {
                     } else {
                         nameLabel.setText(user.getName());
                         emailLabel.setText("📧 " + user.getEmail());
-                        phoneLabel.setText("📞 " + (user.getPhone_number() != null ? user.getPhone_number() : "Non renseigné"));
+                        phoneLabel.setText("📞 " + (user.getPhone_number() != null ? user.getPhone_number() : "Not provided"));
                         
                         try {
                             double avgRating = ratingService.getAverageRating(user.getId());
@@ -226,17 +226,17 @@ public class ClientDashboardController implements Initializable {
                         
                         try {
                             if (ratingService.hasUserRatedUser(currentUser.getId(), user.getId())) {
-                                rateButton.setText("Noté ✓");
+                                rateButton.setText("Rated ✓");
                                 rateButton.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;");
                                 rateButton.setDisable(true);
                             } else {
-                                rateButton.setText("Noter");
+                                rateButton.setText("Rate");
                                 rateButton.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;");
                                 rateButton.setDisable(false);
                                 rateButton.setOnAction(e -> showRatingDialog(user));
                             }
                         } catch (Exception ex) {
-                            rateButton.setText("Erreur");
+                            rateButton.setText("Error");
                             rateButton.setDisable(true);
                         }
                         
@@ -251,7 +251,7 @@ public class ClientDashboardController implements Initializable {
             // Update content area
             Platform.runLater(() -> {
                 ratingContentArea.getChildren().clear();
-                Label title = new Label("Liste des clients (" + clients.size() + " clients)");
+                Label title = new Label("Client List (" + clients.size() + " clients)");
                 title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
                 ratingContentArea.getChildren().addAll(title, clientsListView);
             });
@@ -277,43 +277,76 @@ public class ClientDashboardController implements Initializable {
 
             List<Rating> givenRatings = ratingService.getRatingsGivenByUser(currentUser.getId());
             
-            // Create table
-            TableView<Rating> ratingsTable = new TableView<>();
+            // Create ListView
+            ListView<Rating> ratingsListView = new ListView<>();
+            ratingsListView.setPrefHeight(400);
             
-            TableColumn<Rating, String> userColumn = new TableColumn<>("Client noté");
-            userColumn.setCellValueFactory(new PropertyValueFactory<>("ratedName"));
-            userColumn.setPrefWidth(200);
-            
-            TableColumn<Rating, Integer> starsColumn = new TableColumn<>("Note");
-            starsColumn.setCellValueFactory(new PropertyValueFactory<>("stars"));
-            starsColumn.setPrefWidth(80);
-            
-            TableColumn<Rating, String> commentColumn = new TableColumn<>("Commentaire");
-            commentColumn.setCellValueFactory(cellData -> {
-                String comment = cellData.getValue().getComment();
-                return new SimpleStringProperty(comment != null && !comment.trim().isEmpty() ? comment : "Aucun commentaire");
-            });
-            commentColumn.setPrefWidth(300);
-            
-            TableColumn<Rating, String> dateColumn = new TableColumn<>("Date");
-            dateColumn.setCellValueFactory(cellData -> {
-                return new SimpleStringProperty(
-                    cellData.getValue().getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
-                );
-            });
-            dateColumn.setPrefWidth(120);
+            // Custom cell factory for displaying rating info
+            ratingsListView.setCellFactory(listView -> new ListCell<Rating>() {
+                private final HBox hbox = new HBox(15);
+                private final VBox ratingInfo = new VBox(5);
+                private final VBox detailsInfo = new VBox(3);
+                private final Label clientLabel = new Label();
+                private final Label starsLabel = new Label();
+                private final Label commentLabel = new Label();
+                private final Label dateLabel = new Label();
 
-            ratingsTable.getColumns().addAll(userColumn, starsColumn, commentColumn, dateColumn);
+                {
+                    clientLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #2c3e50;");
+                    starsLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #f39c12; -fx-font-weight: bold;");
+                    commentLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666; -fx-wrap-text: true;");
+                    dateLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #95a5a6;");
+                    
+                    ratingInfo.getChildren().addAll(clientLabel, starsLabel);
+                    detailsInfo.getChildren().addAll(commentLabel, dateLabel);
+                    hbox.getChildren().addAll(ratingInfo, detailsInfo);
+                    hbox.setAlignment(Pos.CENTER_LEFT);
+                    
+                    // Add padding
+                    hbox.setPadding(new Insets(12));
+                    hbox.setStyle("-fx-background-color: #f8f9fa; -fx-background-radius: 8; -fx-border-color: #e9ecef; -fx-border-radius: 8; -fx-border-width: 1;");
+                }
+
+                @Override
+                protected void updateItem(Rating rating, boolean empty) {
+                    super.updateItem(rating, empty);
+                    
+                    if (empty || rating == null) {
+                        setGraphic(null);
+                    } else {
+                        clientLabel.setText("👤 " + rating.getRatedName());
+                        
+                        // Generate stars
+                        StringBuilder stars = new StringBuilder();
+                        for (int i = 0; i < rating.getStars(); i++) {
+                            stars.append("⭐");
+                        }
+                        starsLabel.setText(stars.toString() + " (" + rating.getStars() + "/5)");
+                        
+                        String comment = rating.getComment();
+                        if (comment != null && !comment.trim().isEmpty()) {
+                            commentLabel.setText("💬 " + comment);
+                        } else {
+                            commentLabel.setText("💬 No comment");
+                            commentLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #bdc3c7; -fx-font-style: italic;");
+                        }
+                        
+                        dateLabel.setText("📅 " + rating.getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+                        
+                        setGraphic(hbox);
+                    }
+                }
+            });
             
             ObservableList<Rating> ratingsList = FXCollections.observableArrayList(givenRatings);
-            ratingsTable.setItems(ratingsList);
+            ratingsListView.setItems(ratingsList);
             
             // Update content area
             Platform.runLater(() -> {
                 ratingContentArea.getChildren().clear();
-                Label title = new Label("Mes ratings donnés (" + givenRatings.size() + " ratings)");
+                Label title = new Label("My Given Ratings (" + givenRatings.size() + " ratings)");
                 title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-                ratingContentArea.getChildren().addAll(title, ratingsTable);
+                ratingContentArea.getChildren().addAll(title, ratingsListView);
             });
             
             System.out.println("Given ratings loaded: " + givenRatings.size() + " ratings");
@@ -337,43 +370,76 @@ public class ClientDashboardController implements Initializable {
 
             List<Rating> receivedRatings = ratingService.getRatingsReceivedByUser(currentUser.getId());
             
-            // Create table
-            TableView<Rating> ratingsTable = new TableView<>();
+            // Create ListView
+            ListView<Rating> ratingsListView = new ListView<>();
+            ratingsListView.setPrefHeight(400);
             
-            TableColumn<Rating, String> userColumn = new TableColumn<>("Client qui a noté");
-            userColumn.setCellValueFactory(new PropertyValueFactory<>("raterName"));
-            userColumn.setPrefWidth(200);
-            
-            TableColumn<Rating, Integer> starsColumn = new TableColumn<>("Note reçue");
-            starsColumn.setCellValueFactory(new PropertyValueFactory<>("stars"));
-            starsColumn.setPrefWidth(100);
-            
-            TableColumn<Rating, String> commentColumn = new TableColumn<>("Commentaire");
-            commentColumn.setCellValueFactory(cellData -> {
-                String comment = cellData.getValue().getComment();
-                return new SimpleStringProperty(comment != null && !comment.trim().isEmpty() ? comment : "Aucun commentaire");
-            });
-            commentColumn.setPrefWidth(300);
-            
-            TableColumn<Rating, String> dateColumn = new TableColumn<>("Date");
-            dateColumn.setCellValueFactory(cellData -> {
-                return new SimpleStringProperty(
-                    cellData.getValue().getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
-                );
-            });
-            dateColumn.setPrefWidth(120);
+            // Custom cell factory for displaying received rating info
+            ratingsListView.setCellFactory(listView -> new ListCell<Rating>() {
+                private final HBox hbox = new HBox(15);
+                private final VBox ratingInfo = new VBox(5);
+                private final VBox detailsInfo = new VBox(3);
+                private final Label clientLabel = new Label();
+                private final Label starsLabel = new Label();
+                private final Label commentLabel = new Label();
+                private final Label dateLabel = new Label();
 
-            ratingsTable.getColumns().addAll(userColumn, starsColumn, commentColumn, dateColumn);
+                {
+                    clientLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #2c3e50;");
+                    starsLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #e67e22; -fx-font-weight: bold;");
+                    commentLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666; -fx-wrap-text: true;");
+                    dateLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #95a5a6;");
+                    
+                    ratingInfo.getChildren().addAll(clientLabel, starsLabel);
+                    detailsInfo.getChildren().addAll(commentLabel, dateLabel);
+                    hbox.getChildren().addAll(ratingInfo, detailsInfo);
+                    hbox.setAlignment(Pos.CENTER_LEFT);
+                    
+                    // Add padding and different background color for received ratings
+                    hbox.setPadding(new Insets(12));
+                    hbox.setStyle("-fx-background-color: #fff3e0; -fx-background-radius: 8; -fx-border-color: #ffcc02; -fx-border-radius: 8; -fx-border-width: 1;");
+                }
+
+                @Override
+                protected void updateItem(Rating rating, boolean empty) {
+                    super.updateItem(rating, empty);
+                    
+                    if (empty || rating == null) {
+                        setGraphic(null);
+                    } else {
+                        clientLabel.setText("👤 From: " + rating.getRaterName());
+                        
+                        // Generate stars
+                        StringBuilder stars = new StringBuilder();
+                        for (int i = 0; i < rating.getStars(); i++) {
+                            stars.append("⭐");
+                        }
+                        starsLabel.setText(stars.toString() + " (" + rating.getStars() + "/5)");
+                        
+                        String comment = rating.getComment();
+                        if (comment != null && !comment.trim().isEmpty()) {
+                            commentLabel.setText("💬 " + comment);
+                        } else {
+                            commentLabel.setText("💬 No comment");
+                            commentLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #bdc3c7; -fx-font-style: italic;");
+                        }
+                        
+                        dateLabel.setText("📅 " + rating.getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+                        
+                        setGraphic(hbox);
+                    }
+                }
+            });
             
             ObservableList<Rating> ratingsList = FXCollections.observableArrayList(receivedRatings);
-            ratingsTable.setItems(ratingsList);
+            ratingsListView.setItems(ratingsList);
             
             // Update content area
             Platform.runLater(() -> {
                 ratingContentArea.getChildren().clear();
-                Label title = new Label("Mes ratings reçus (" + receivedRatings.size() + " ratings)");
+                Label title = new Label("My Received Ratings (" + receivedRatings.size() + " ratings)");
                 title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
-                ratingContentArea.getChildren().addAll(title, ratingsTable);
+                ratingContentArea.getChildren().addAll(title, ratingsListView);
             });
             
             System.out.println("Received ratings loaded: " + receivedRatings.size() + " ratings");
@@ -392,39 +458,39 @@ public class ClientDashboardController implements Initializable {
         
         Platform.runLater(() -> {
             ratingContentArea.getChildren().clear();
-            Label message = new Label("Données actualisées ! Sélectionnez une action ci-dessus.");
+            Label message = new Label("Data refreshed! Select an action above.");
             message.setStyle("-fx-font-size: 16px; -fx-text-fill: #27ae60;");
             ratingContentArea.getChildren().add(message);
         });
         
-        showAlert(Alert.AlertType.INFORMATION, "Actualisation", "Les données ont été actualisées avec succès !");
+        showAlert(Alert.AlertType.INFORMATION, "Refresh", "Data has been successfully refreshed!");
     }
 
     private void showRatingDialog(User userToRate) {
         System.out.println("Opening rating dialog for: " + userToRate.getName());
         
         Dialog<Rating> dialog = new Dialog<>();
-        dialog.setTitle("Noter l'utilisateur");
-        dialog.setHeaderText("Noter " + userToRate.getName());
+        dialog.setTitle("Rate User");
+        dialog.setHeaderText("Rate " + userToRate.getName());
 
-        ButtonType rateButtonType = new ButtonType("Soumettre", ButtonBar.ButtonData.OK_DONE);
+        ButtonType rateButtonType = new ButtonType("Submit", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(rateButtonType, ButtonType.CANCEL);
 
         VBox formContainer = new VBox(15);
         formContainer.setStyle("-fx-padding: 20;");
 
-        Label starsLabel = new Label("Note (1-5 étoiles) :");
+        Label starsLabel = new Label("Rating (1-5 stars):");
         starsLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         
         ComboBox<Integer> starsComboBox = new ComboBox<>();
         starsComboBox.getItems().addAll(1, 2, 3, 4, 5);
         starsComboBox.setValue(5);
 
-        Label commentLabel = new Label("Commentaire (optionnel) :");
+        Label commentLabel = new Label("Comment (optional):");
         commentLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         
         TextArea commentArea = new TextArea();
-        commentArea.setPromptText("Entrez votre commentaire ici (optionnel)...");
+        commentArea.setPromptText("Enter your comment here (optional)...");
         commentArea.setPrefRowCount(4);
 
         formContainer.getChildren().addAll(starsLabel, starsComboBox, commentLabel, commentArea);
@@ -436,7 +502,7 @@ public class ClientDashboardController implements Initializable {
             String comment = commentArea.getText().trim();
 
             if (stars == null) {
-                showAlert(Alert.AlertType.ERROR, "Erreur de validation", "Veuillez sélectionner une note.");
+                showAlert(Alert.AlertType.ERROR, "Validation Error", "Please select a rating.");
                 event.consume();
                 return;
             }
@@ -446,12 +512,12 @@ public class ClientDashboardController implements Initializable {
                 Rating rating = new Rating(currentUser.getId(), userToRate.getId(), stars, comment);
                 ratingService.addRating(rating);
                 
-                showAlert(Alert.AlertType.INFORMATION, "Succès", "Note soumise avec succès !");
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Rating submitted successfully!");
                 loadRatingStatistics(); // Refresh statistics
                 
             } catch (Exception e) {
                 System.out.println("Error submitting rating: " + e.getMessage());
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de la soumission : " + e.getMessage());
+                showAlert(Alert.AlertType.ERROR, "Error", "Error submitting rating: " + e.getMessage());
                 event.consume();
             }
         });

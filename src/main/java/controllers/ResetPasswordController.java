@@ -81,7 +81,7 @@ public class ResetPasswordController {
         emailStep.setVisible(true);
         codeStep.setVisible(false);
         passwordStep.setVisible(false);
-        instructionsLabel.setText("Entrez votre adresse email pour réinitialiser votre mot de passe.");
+        instructionsLabel.setText("Enter your email address to reset your password.");
     }
 
     /**
@@ -91,7 +91,7 @@ public class ResetPasswordController {
         emailStep.setVisible(false);
         codeStep.setVisible(true);
         passwordStep.setVisible(false);
-        instructionsLabel.setText("Un code de vérification a été envoyé à votre adresse email. Veuillez l'entrer ci-dessous.");
+        instructionsLabel.setText("A verification code has been sent to your email address. Please enter it below..");
     }
 
     /**
@@ -101,7 +101,7 @@ public class ResetPasswordController {
         emailStep.setVisible(false);
         codeStep.setVisible(false);
         passwordStep.setVisible(true);
-        instructionsLabel.setText("Entrez votre nouveau mot de passe.");
+        instructionsLabel.setText("Enter your new password.");
     }
 
     /**
@@ -119,7 +119,7 @@ public class ResetPasswordController {
 
         // Demander une réinitialisation de mot de passe
         // Cette méthode génère un token, l'enregistre et envoie l'email
-        instructionsLabel.setText("Envoi du code de réinitialisation en cours...");
+        instructionsLabel.setText("Sending reset code...");
 
         // Créer une tâche en arrière-plan pour la demande de réinitialisation
         Task<Boolean> resetTask = new Task<Boolean>() {
@@ -135,8 +135,8 @@ public class ResetPasswordController {
                 Boolean resetRequested = resetTask.getValue();
                 if (resetRequested) {
                     // Demande de réinitialisation réussie
-                    showAlert(Alert.AlertType.INFORMATION, "Code envoyé",
-                            "Un code de réinitialisation a été envoyé à votre adresse email.");
+                    showAlert(Alert.AlertType.INFORMATION, "Code sent",
+                            "A reset code has been sent to your email address.");
 
                     // Stocker l'email pour les étapes suivantes
                     currentEmail = email;
@@ -168,7 +168,7 @@ public class ResetPasswordController {
 
         // Vérifier que le code n'est pas vide
         if (code.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez entrer le code de vérification.");
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Please enter the verification code.");
             return;
         }
 
@@ -208,7 +208,7 @@ public class ResetPasswordController {
         boolean reset = resetService.resetPassword(resetToken, newPassword);
 
         if (reset) {
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Votre mot de passe a été réinitialisé avec succès.");
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Your password has been successfully reset..");
 
             // Rediriger vers la page de connexion
             navigateToLogin();

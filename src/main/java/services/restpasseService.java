@@ -206,19 +206,19 @@ public class restpasseService {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(EMAIL_USERNAME, APP_NAME));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-            message.setSubject("Réinitialisation de mot de passe - " + APP_NAME);
+            message.setSubject("Reset password - " + APP_NAME);
 
             // Corps du message avec le token directement (pour une application de bureau)
             StringBuilder messageText = new StringBuilder();
-            messageText.append("Bonjour,\n\n");
-            messageText.append("Vous avez demandé une réinitialisation de mot de passe pour votre compte " + APP_NAME + ".\n\n");
-            messageText.append("Voici votre code de réinitialisation :\n\n");
-            messageText.append("=== " + token + " ===\n\n");
-            messageText.append("Copiez ce code et collez-le dans l'application pour réinitialiser votre mot de passe.\n\n");
-            messageText.append("Ce code expirera dans 24 heures.\n\n");
-            messageText.append("Si vous n'avez pas demandé cette réinitialisation, veuillez ignorer cet email.\n\n");
-            messageText.append("Cordialement,\n");
-            messageText.append("L'équipe de " + APP_NAME);
+            messageText.append("Hello,\n\n");
+            messageText.append("You have requested a password reset for your account " + APP_NAME + ".\n\n");
+            messageText.append("Here is your reset code :\n\n");
+            messageText.append(" " + token + " \n\n");
+            messageText.append("Copy this code and paste it into the app to reset your password.\n\n");
+            messageText.append("This code will expire in 24 hours.\n\n");
+            messageText.append("If you did not request this reset, please ignore this email..\n\n");
+            messageText.append("Sincerely,\n");
+            messageText.append("The team of " + APP_NAME);
 
             message.setText(messageText.toString());
 
