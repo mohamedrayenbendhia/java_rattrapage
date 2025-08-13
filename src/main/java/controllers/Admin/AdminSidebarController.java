@@ -40,6 +40,12 @@ public class AdminSidebarController implements Initializable {
     private Button profileButton;
 
     @FXML
+    private HBox contactHBox;
+
+    @FXML
+    private Button contactButton;
+
+    @FXML
     private Button logoutButton;
 
     private BorderPane mainBorderPane;
@@ -99,6 +105,37 @@ public class AdminSidebarController implements Initializable {
             e.printStackTrace();
         }
         setActiveButton(profileButton);
+    }
+
+    @FXML
+    private void handleContactClick(ActionEvent event) {
+        try {
+            System.out.println("Loading contact list page...");
+            
+            // Load contact list page
+            URL url = getClass().getResource("/fxml/admin/AdminContactList.fxml");
+            if (url == null) {
+                System.err.println("FXML file not found: /fxml/admin/AdminContactList.fxml");
+                return;
+            }
+
+            System.out.println("Contact list URL found: " + url);
+            FXMLLoader loader = new FXMLLoader(url);
+            Parent root = loader.load();
+
+            // Create new scene and set it on current stage
+            Scene scene = dashboardButton.getScene();
+            if (scene != null) {
+                Stage stage = (Stage) scene.getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            }
+        } catch (IOException e) {
+            System.err.println("Error loading contact list page: " + e.getMessage());
+            e.printStackTrace();
+        }
+        setActiveButton(contactButton);
     }
 
     @FXML
