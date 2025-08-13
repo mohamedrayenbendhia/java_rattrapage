@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import services.ContactService;
 import services.HolidayService;
+import services.SMSService;
 import utils.SceneManager;
 
 import java.net.URL;
@@ -103,7 +104,11 @@ public class ContactController implements Initializable {
                     contentArea.getText().trim()
                 );
                 
+                // Save contact to database
                 contactService.ajouter(contact);
+                
+                // Send SMS notification
+                sendSMSNotification(contact);
                 
                 // Show success message
                 showMessage("Message sent successfully! We will get back to you soon.", "success");
@@ -115,6 +120,37 @@ public class ContactController implements Initializable {
                 showMessage("Error sending message. Please try again.", "error");
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void sendSMSNotification(Contact contact) {
+        try {
+            String adminPhoneNumber = "+21656225983";
+            
+            // Create SMS message content
+            String smsMessage = String.format(
+                "New Contact Message Received!\n\n" +
+                "From: %s\n" +
+                "Subject: %s\n" +
+                "Message: %s\n\n" +
+                "Please check the admin panel for full details.",
+                contact.getUserEmail(),
+                contact.getSubject(),
+                contact.getContent().length() > 100 
+                    ? contact.getContent().substring(0, 100) + "..." 
+                    : contact.getContent()
+            );
+            
+            // Send SMS using SMSService
+            SMSService.sendSMS(adminPhoneNumber, smsMessage);
+            
+            System.out.println("SMS notification sent to admin: " + adminPhoneNumber);
+            
+        } catch (Exception e) {
+            // Log error but don't fail the contact submission
+            System.err.println("Failed to send SMS notification: " + e.getMessage());
+            e.printStackTrace();
+            // Don't throw exception to avoid disrupting the contact form submission
         }
     }
 
