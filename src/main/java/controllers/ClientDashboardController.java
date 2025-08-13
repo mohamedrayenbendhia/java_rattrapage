@@ -466,6 +466,18 @@ public class ClientDashboardController implements Initializable {
         showAlert(Alert.AlertType.INFORMATION, "Refresh", "Data has been successfully refreshed!");
     }
 
+    @FXML
+    public void handleContactUs(ActionEvent event) {
+        try {
+            // Récupérer le stage depuis un élément de l'interface au lieu de event.getSource()
+            Stage stage = (Stage) userInfoText.getScene().getWindow();
+            SceneManager.navigateToPage(stage, "/fxml/Contact.fxml", "Contact Us");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not open contact page: " + e.getMessage());
+        }
+    }
+
     private void showRatingDialog(User userToRate) {
         System.out.println("Opening rating dialog for: " + userToRate.getName());
         

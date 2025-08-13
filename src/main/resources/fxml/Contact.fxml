@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ContactController">
+   <center>
+      <VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #f8f9fa;">
+         <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+         </padding>
+         
+         <!-- Header -->
+         <VBox alignment="CENTER" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+            <padding>
+               <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+            </padding>
+            <Text fill="#2c3e50" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact Us" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Text>
+            <Text fill="#6c757d" strokeType="OUTSIDE" strokeWidth="0.0" text="We're here to help! Send us a message and we'll respond as soon as possible." textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </VBox>
+
+         <!-- Contact Form -->
+         <VBox spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" maxWidth="600.0">
+            <padding>
+               <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+
+            <!-- Email Field -->
+            <VBox spacing="5.0">
+               <Label text="Your Email:" textFill="#495057">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Label>
+               <TextField fx:id="userEmailField" promptText="Your email address" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ced4da; -fx-padding: 10;">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </TextField>
+            </VBox>
+
+            <!-- Subject Field -->
+            <VBox spacing="5.0">
+               <Label text="Subject:" textFill="#495057">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Label>
+               <TextField fx:id="subjectField" promptText="Brief description of your message" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ced4da; -fx-padding: 10;">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </TextField>
+            </VBox>
+
+            <!-- Content Area -->
+            <VBox spacing="5.0">
+               <Label text="Message:" textFill="#495057">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Label>
+               <TextArea fx:id="contentArea" prefRowCount="6" promptText="Please describe your inquiry or concern in detail..." style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ced4da;" wrapText="true">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </TextArea>
+            </VBox>
+
+            <!-- Weekend Notice -->
+            <Label fx:id="weekendNoticeLabel" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+
+            <!-- Holidays Information -->
+            <VBox spacing="5.0">
+               <Label text="Holiday Information:" textFill="#495057">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Label>
+               <TextArea fx:id="holidaysTextArea" prefRowCount="4" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #ced4da;" wrapText="true">
+                  <font>
+                     <Font size="12.0" />
+                  </font>
+               </TextArea>
+            </VBox>
+
+            <!-- Buttons -->
+            <HBox alignment="CENTER" spacing="15.0">
+               <Button fx:id="sendButton" mnemonicParsing="false" prefWidth="120.0" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold; -fx-padding: 10 20 10 20;" text="Send Message">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Button>
+               <Button fx:id="backButton" mnemonicParsing="false" prefWidth="120.0" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold; -fx-padding: 10 20 10 20;" text="Back">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Button>
+            </HBox>
+
+            <!-- Message Label -->
+            <Label fx:id="messageLabel" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+
+         </VBox>
+      </VBox>
+   </center>
+</BorderPane>

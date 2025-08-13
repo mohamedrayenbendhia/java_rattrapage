@@ -14,6 +14,8 @@
         <VBox>
             <MenuBar style="-fx-background-color: #3498db; -fx-padding: 5px;">
                 <Menu text="File" style="-fx-text-fill: white;">
+                    <MenuItem text="Contact Us" onAction="#handleContactUs"/>
+                    <SeparatorMenuItem />
                     <MenuItem text="Logout" onAction="#handleLogout"/>
                     <SeparatorMenuItem />
                     <MenuItem text="Exit" onAction="#handleExit"/>
