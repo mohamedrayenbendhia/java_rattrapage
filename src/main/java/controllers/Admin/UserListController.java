@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class UserListController implements Initializable {
 
@@ -44,21 +45,92 @@ public class UserListController implements Initializable {
     @FXML
     private Label messageLabel;
 
+    // Search and filter components
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private ComboBox<String> roleFilterComboBox;
+
+    @FXML
+    private ComboBox<String> statusFilterComboBox;
+
+    @FXML
+    private Button clearFiltersButton;
+
+    // Pagination components
+    @FXML
+    private Button firstPageButton;
+
+    @FXML
+    private Button prevPageButton;
+
+    @FXML
+    private Button nextPageButton;
+
+    @FXML
+    private Button lastPageButton;
+
+    @FXML
+    private Label pageInfoLabel;
+
+    @FXML
+    private ComboBox<Integer> pageSizeComboBox;
+
     private UserService userService;
-    private ObservableList<User> userList;
+    private ObservableList<User> allUsers;
+    private ObservableList<User> filteredUsers;
+    private ObservableList<User> displayedUsers;
+    
+    // Pagination variables
+    private int currentPage = 1;
+    private int pageSize = 7;
+    private int totalPages = 1;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Initialiser le service utilisateur
         userService = UserService.getInstance();
-        userList = FXCollections.observableArrayList();
+        allUsers = FXCollections.observableArrayList();
+        filteredUsers = FXCollections.observableArrayList();
+        displayedUsers = FXCollections.observableArrayList();
         
         // Configurer la ListView pour afficher les utilisateurs
-        userListView.setItems(userList);
+        userListView.setItems(displayedUsers);
         userListView.setCellFactory(listView -> new UserListCell());
+        
+        // Initialiser les composants de recherche et filtrage
+        initializeSearchAndFilters();
+        
+        // Initialiser la pagination
+        initializePagination();
         
         // Charger les utilisateurs
         loadUsers();
+    }
+
+    /**
+     * Initialiser les composants de recherche et filtrage
+     */
+    private void initializeSearchAndFilters() {
+        // Configurer les ComboBox de filtrage (suppression du filtre par rôle)
+        if (statusFilterComboBox != null) {
+            statusFilterComboBox.getItems().clear();
+            statusFilterComboBox.getItems().addAll("Active", "Blocked");
+            // Ne pas définir de valeur par défaut pour permettre « aucun filtre »
+            statusFilterComboBox.setValue(null);
+        }
+    }
+
+    /**
+     * Initialiser la pagination
+     */
+    private void initializePagination() {
+        // Configurer le ComboBox de taille de page
+        pageSizeComboBox.getItems().addAll(5, 7, 10, 15, 20);
+        pageSizeComboBox.setValue(pageSize);
+        
+        updatePaginationButtons();
     }
 
     /**
@@ -172,13 +244,174 @@ public class UserListController implements Initializable {
                 users = userService.getAllUsers();
             }
             
-            userList.clear();
-            userList.addAll(users);
-            messageLabel.setText("Number of users: " + users.size());
+            allUsers.clear();
+            allUsers.addAll(users);
+            
+            // Appliquer les filtres et la pagination
+            applyFiltersAndPagination();
+            
+            messageLabel.setText("Total users: " + allUsers.size() + " | Showing: " + displayedUsers.size());
         } catch (SQLException e) {
             messageLabel.setText("Error loading users: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Appliquer les filtres et la pagination
+     */
+    private void applyFiltersAndPagination() {
+        // Appliquer les filtres
+        String searchText = searchField.getText() == null ? "" : searchField.getText().toLowerCase().trim();
+        String statusFilter = statusFilterComboBox.getValue();
+
+        filteredUsers.clear();
+        filteredUsers.addAll(allUsers.stream()
+                .filter(user -> {
+                    // Filtre de recherche
+                    boolean matchesSearch = searchText.isEmpty() || 
+                            user.getName().toLowerCase().contains(searchText) ||
+                            user.getEmail().toLowerCase().contains(searchText) ||
+                            user.getPhone_number().contains(searchText);
+
+                    // Filtre de statut (seulement Active/Blocked)
+                    boolean matchesStatus = statusFilter == null || statusFilter.isEmpty() ||
+                            ("Active".equals(statusFilter) && !user.isBlocked()) ||
+                            ("Blocked".equals(statusFilter) && user.isBlocked());
+
+                    return matchesSearch && matchesStatus;
+                })
+                .collect(Collectors.toList()));
+
+        // Calculer la pagination
+        totalPages = (int) Math.ceil((double) filteredUsers.size() / pageSize);
+        if (totalPages == 0) totalPages = 1;
+        
+        // Ajuster la page courante si nécessaire
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+
+        // Appliquer la pagination
+        int startIndex = (currentPage - 1) * pageSize;
+        int endIndex = Math.min(startIndex + pageSize, filteredUsers.size());
+
+        displayedUsers.clear();
+        if (startIndex < filteredUsers.size()) {
+            displayedUsers.addAll(filteredUsers.subList(startIndex, endIndex));
+        }
+
+        updatePaginationButtons();
+        updatePageInfo();
+    }
+
+    /**
+     * Mettre à jour les boutons de pagination
+     */
+    private void updatePaginationButtons() {
+        firstPageButton.setDisable(currentPage <= 1);
+        prevPageButton.setDisable(currentPage <= 1);
+        nextPageButton.setDisable(currentPage >= totalPages);
+        lastPageButton.setDisable(currentPage >= totalPages);
+    }
+
+    /**
+     * Mettre à jour les informations de page
+     */
+    private void updatePageInfo() {
+        pageInfoLabel.setText("Page " + currentPage + " of " + totalPages);
+    }
+
+    // Gestionnaires d'événements pour la recherche et le filtrage
+
+    /**
+     * Gestionnaire pour la recherche
+     */
+    @FXML
+    private void handleSearch() {
+        currentPage = 1; // Revenir à la première page lors d'une recherche
+        applyFiltersAndPagination();
+    }
+
+    /**
+     * Gestionnaire pour le filtre de rôle
+     */
+    @FXML
+    private void handleRoleFilter() {
+        currentPage = 1;
+        applyFiltersAndPagination();
+    }
+
+    /**
+     * Gestionnaire pour le filtre de statut
+     */
+    @FXML
+    private void handleStatusFilter() {
+        currentPage = 1;
+        applyFiltersAndPagination();
+    }
+
+    /**
+     * Gestionnaire pour effacer les filtres
+     */
+    @FXML
+    private void handleClearFilters() {
+        if (searchField != null) searchField.clear();
+        if (statusFilterComboBox != null) statusFilterComboBox.setValue(null);
+        currentPage = 1;
+        applyFiltersAndPagination();
+    }
+
+    // Gestionnaires d'événements pour la pagination
+
+    /**
+     * Aller à la première page
+     */
+    @FXML
+    private void handleFirstPage() {
+        currentPage = 1;
+        applyFiltersAndPagination();
+    }
+
+    /**
+     * Aller à la page précédente
+     */
+    @FXML
+    private void handlePrevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            applyFiltersAndPagination();
+        }
+    }
+
+    /**
+     * Aller à la page suivante
+     */
+    @FXML
+    private void handleNextPage() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            applyFiltersAndPagination();
+        }
+    }
+
+    /**
+     * Aller à la dernière page
+     */
+    @FXML
+    private void handleLastPage() {
+        currentPage = totalPages;
+        applyFiltersAndPagination();
+    }
+
+    /**
+     * Changer la taille de page
+     */
+    @FXML
+    private void handlePageSizeChange() {
+        pageSize = pageSizeComboBox.getValue();
+        currentPage = 1; // Revenir à la première page
+        applyFiltersAndPagination();
     }
 
     /**

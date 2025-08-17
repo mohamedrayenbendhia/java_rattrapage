@@ -266,3 +266,125 @@
     -fx-background-radius: 10;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
 }
+
+/* Search and Filter Styles */
+.search-section {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.search-field {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 8 12;
+    -fx-font-size: 14px;
+}
+
+.search-field:focused {
+    -fx-border-color: #3498db;
+    -fx-background-color: white;
+}
+
+.filter-combo {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 6 8;
+    -fx-font-size: 14px;
+}
+
+.filter-combo:focused {
+    -fx-border-color: #3498db;
+}
+
+.clear-button {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+}
+
+.clear-button:hover {
+    -fx-background-color: #5a6268;
+}
+
+/* Pagination Styles */
+.pagination-section {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-padding: 10 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.pagination-button {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 6 12;
+    -fx-font-size: 14px;
+    -fx-text-fill: #495057;
+}
+
+.pagination-button:hover {
+    -fx-background-color: #e9ecef;
+    -fx-border-color: #adb5bd;
+}
+
+.pagination-button:disabled {
+    -fx-opacity: 0.5;
+    -fx-text-fill: #adb5bd;
+}
+
+.page-info {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057;
+}
+
+.page-size-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6c757d;
+}
+
+.page-size-combo {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 4 8;
+    -fx-font-size: 14px;
+}
+
+.separator {
+    -fx-font-size: 14px;
+    -fx-text-fill: #adb5bd;
+}
+
+/* Success Button Styles */
+.success-button {
+    -fx-background-color: #28a745;
+}
+
+.success-button:hover {
+    -fx-background-color: #218838;
+}
+
+/* Back Button Styles */
+.back-button {
+    -fx-background-color: #6c757d;
+}
+
+.back-button:hover {
+    -fx-background-color: #5a6268;
+}
+
+/* Info Message Styles */
+.info-message {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6c757d;
+    -fx-font-style: italic;
+}

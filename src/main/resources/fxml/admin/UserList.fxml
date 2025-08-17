@@ -6,6 +6,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.geometry.Insets?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
@@ -33,8 +35,38 @@
         <Button fx:id="refreshButton" text="Refresh" onAction="#handleRefresh" styleClass="action-button"/>
     </HBox>
 
+    <!-- Search and Filter Section -->
+    <VBox spacing="10" styleClass="search-section">
+        <Label text="Search and Filter" styleClass="section-title"/>
+        <HBox spacing="15" alignment="CENTER_LEFT">
+            <TextField fx:id="searchField" promptText="Search by name, email, or phone..." prefWidth="300" 
+                      styleClass="search-field" onKeyReleased="#handleSearch"/>
+            <ComboBox fx:id="statusFilterComboBox" promptText="Filter by status (Active/Blocked)" prefWidth="180" 
+                     styleClass="filter-combo" onAction="#handleStatusFilter"/>
+            <Button fx:id="clearFiltersButton" text="Clear Filters" onAction="#handleClearFilters" 
+                   styleClass="action-button, clear-button"/>
+        </HBox>
+    </VBox>
+
     <Label styleClass="section-title" text="Users"/>
     <ListView fx:id="userListView" VBox.vgrow="ALWAYS" styleClass="custom-list-view"/>
+
+    <!-- Pagination Section -->
+    <HBox spacing="10" alignment="CENTER" styleClass="pagination-section">
+        <Button fx:id="firstPageButton" text="First" onAction="#handleFirstPage" 
+               styleClass="pagination-button" disable="true"/>
+        <Button fx:id="prevPageButton" text="Previous" onAction="#handlePrevPage" 
+               styleClass="pagination-button" disable="true"/>
+        <Label fx:id="pageInfoLabel" text="Page 1 of 1" styleClass="page-info"/>
+        <Button fx:id="nextPageButton" text="Next" onAction="#handleNextPage" 
+               styleClass="pagination-button" disable="true"/>
+        <Button fx:id="lastPageButton" text="Last" onAction="#handleLastPage" 
+               styleClass="pagination-button" disable="true"/>
+        <Label text=" | " styleClass="separator"/>
+        <Label text="Users per page:" styleClass="page-size-label"/>
+        <ComboBox fx:id="pageSizeComboBox" onAction="#handlePageSizeChange" 
+                 prefWidth="80" styleClass="page-size-combo"/>
+    </HBox>
 
     <Label fx:id="messageLabel" text="User list will be displayed here" styleClass="info-message"/>
         </VBox>
