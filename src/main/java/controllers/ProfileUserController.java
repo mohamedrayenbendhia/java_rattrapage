@@ -321,14 +321,27 @@ public class ProfileUserController implements Initializable {
                 }
             }
 
+            // Always verify against the latest password hash from the database (session value may be stale)
+            User latestUser;
+            try {
+                latestUser = userService.getUserById(currentUser.getId());
+                if (latestUser == null) {
+                    showAlert(Alert.AlertType.ERROR, "Error", "User not found");
+                    return;
+                }
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Error verifying current password: " + e.getMessage());
+                return;
+            }
+
             // Vérifier que l'utilisateur a un mot de passe défini
-            if (currentUser.getPassword() == null || currentUser.getPassword().isEmpty()) {
+            if (latestUser.getPassword() == null || latestUser.getPassword().isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Error", "User password is not set. Please contact administrator.");
                 return;
             }
 
             // Vérifier que le mot de passe actuel est correct
-            if (!PasswordHasher.verifyPassword(currentPassword, currentUser.getPassword())) {
+            if (!PasswordHasher.verifyPassword(currentPassword, latestUser.getPassword())) {
                 showAlert(Alert.AlertType.ERROR, "Error", "Current password is incorrect");
                 return;
             }
