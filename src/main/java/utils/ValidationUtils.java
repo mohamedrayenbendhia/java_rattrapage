@@ -17,6 +17,11 @@ public class ValidationUtils {
             "^[0-9]{8}$"
     );
 
+    // Regex for name validation: letters and spaces only (no digits), supports unicode letters
+    private static final Pattern NAME_PATTERN = Pattern.compile(
+            "^[\\p{L} ]+$"
+    );
+
     /**
      * Validates if a name is valid (between 3 and 20 characters)
      * @param name The name to validate
@@ -27,7 +32,11 @@ public class ValidationUtils {
             return false;
         }
         String trimmedName = name.trim();
-        return trimmedName.length() >= 3 && trimmedName.length() <= 20;
+        if (trimmedName.length() < 3 || trimmedName.length() > 20) {
+            return false;
+        }
+        // Must contain letters (unicode) and spaces only; no digits allowed
+        return NAME_PATTERN.matcher(trimmedName).matches();
     }
 
     /**
@@ -82,6 +91,9 @@ public class ValidationUtils {
         }
         if (trimmedName.length() > 20) {
             return "Name must not exceed 20 characters";
+        }
+        if (!NAME_PATTERN.matcher(trimmedName).matches()) {
+            return "Name must contain letters only";
         }
         return null;
     }

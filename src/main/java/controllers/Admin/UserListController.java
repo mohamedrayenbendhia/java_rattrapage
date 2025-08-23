@@ -219,6 +219,15 @@ public class UserListController implements Initializable {
                         deleteButton.setOnAction(e -> deleteUser(user));
                         actionBox.getChildren().add(deleteButton);
                     }
+
+                    // For super admin: allow deleting admin users (but not super admins)
+                    boolean isAdminUser = user.getRole().contains("ROLE_ADMIN") && !user.getRole().contains("ROLE_SUPER_ADMIN");
+                    if (currentUser.getRole().contains("ROLE_SUPER_ADMIN") && isAdminUser) {
+                        Button deleteAdminButton = new Button("Delete Admin");
+                        deleteAdminButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-padding: 5 10; -fx-background-radius: 3;");
+                        deleteAdminButton.setOnAction(e -> deleteUser(user));
+                        actionBox.getChildren().add(deleteAdminButton);
+                    }
                 }
                 
                 userContainer.getChildren().addAll(nameLabel, emailLabel, phoneLabel, statusBox, actionBox);
@@ -784,38 +793,38 @@ public class UserListController implements Initializable {
             String password = passwordField.getText().trim();
             String confirmPassword = confirmPasswordField.getText().trim();
             String role = roleComboBox.getValue();
-            
-            if (!ValidationUtils.isValidName(name)) {
-                showAlert(Alert.AlertType.ERROR, "Validation Error", 
-                    "Name must be between 3 and 20 characters");
+
+            String nameError = ValidationUtils.getNameValidationError(name);
+            if (nameError != null) {
+                showAlert(Alert.AlertType.ERROR, "Validation Error", nameError);
                 event.consume();
                 return;
             }
-            
-            if (!ValidationUtils.isValidEmail(email)) {
-                showAlert(Alert.AlertType.ERROR, "Validation Error", 
-                    "Email address is not valid");
+
+            String emailError = ValidationUtils.getEmailValidationError(email);
+            if (emailError != null) {
+                showAlert(Alert.AlertType.ERROR, "Validation Error", emailError);
                 event.consume();
                 return;
             }
-            
-            if (!ValidationUtils.isValidPhoneNumber(phone)) {
-                showAlert(Alert.AlertType.ERROR, "Validation Error", 
-                    "Phone number must contain exactly 8 digits");
+
+            String phoneError = ValidationUtils.getPhoneValidationError(phone);
+            if (phoneError != null) {
+                showAlert(Alert.AlertType.ERROR, "Validation Error", phoneError);
                 event.consume();
                 return;
             }
-            
-            if (!ValidationUtils.isValidPassword(password)) {
-                showAlert(Alert.AlertType.ERROR, "Validation Error", 
-                    "Password must be at least 8 characters long");
+
+            String passwordError = ValidationUtils.getPasswordValidationError(password);
+            if (passwordError != null) {
+                showAlert(Alert.AlertType.ERROR, "Validation Error", passwordError);
                 event.consume();
                 return;
             }
-            
-            if (!ValidationUtils.doPasswordsMatch(password, confirmPassword)) {
-                showAlert(Alert.AlertType.ERROR, "Validation Error", 
-                    "Passwords do not match");
+
+            String repeatError = ValidationUtils.getRepeatPasswordValidationError(password, confirmPassword);
+            if (repeatError != null) {
+                showAlert(Alert.AlertType.ERROR, "Validation Error", repeatError);
                 event.consume();
                 return;
             }
@@ -903,7 +912,7 @@ public class UserListController implements Initializable {
     }
 
     /**
-     * Delete user (for admin and super admin only, only for regular users)
+     * Delete user (admin/super admin). Super admin can delete admins; nobody can delete super admins.
      */
     private void deleteUser(User user) {
         // Verify current user is admin or super admin
@@ -913,9 +922,18 @@ public class UserListController implements Initializable {
             return;
         }
 
-        // Verify target user is a regular user (not admin or super admin)
-        if (user.getRole().contains("ROLE_ADMIN") || user.getRole().contains("ROLE_SUPER_ADMIN")) {
-            showAlert(Alert.AlertType.ERROR, "Operation Not Allowed", "Cannot delete admin or super admin users.");
+        // Prevent deleting super admins
+        if (user.getRole().contains("ROLE_SUPER_ADMIN")) {
+            showAlert(Alert.AlertType.ERROR, "Operation Not Allowed", "Cannot delete super admin users.");
+            return;
+        }
+
+        boolean targetIsAdmin = user.getRole().contains("ROLE_ADMIN");
+        boolean currentIsSuperAdmin = currentUser.getRole().contains("ROLE_SUPER_ADMIN");
+
+        // Admins cannot delete admins; only super admin can
+        if (targetIsAdmin && !currentIsSuperAdmin) {
+            showAlert(Alert.AlertType.ERROR, "Operation Not Allowed", "Only Super Admin can delete admin users.");
             return;
         }
 
@@ -931,8 +949,11 @@ public class UserListController implements Initializable {
         confirmAlert.showAndWait().ifPresent(result -> {
             if (result == ButtonType.OK) {
                 try {
-                    // Delete user from database
-                    userService.deleteUser(user.getId());
+                    if (targetIsAdmin && currentIsSuperAdmin) {
+                        userService.deleteUserAsSuperAdmin(user.getId());
+                    } else {
+                        userService.deleteUser(user.getId());
+                    }
                     
                     loadUsers(); // Refresh the list
                     showAlert(Alert.AlertType.INFORMATION, "Success", 

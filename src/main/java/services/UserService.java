@@ -441,4 +441,28 @@ public class UserService {
             statement.executeUpdate();
         }
     }
+
+    /**
+     * Delete user as super admin. Allows deleting admins and users; forbids deleting super admins.
+     * @param userId User ID to delete
+     * @throws SQLException In case of SQL error
+     * @throws IllegalArgumentException If trying to delete super admin or user not found
+     */
+    public void deleteUserAsSuperAdmin(int userId) throws SQLException, IllegalArgumentException {
+        User user = getUserById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        
+        // Forbid deleting super admins
+        if (user.getRole().contains("ROLE_SUPER_ADMIN")) {
+            throw new IllegalArgumentException("Cannot delete super admin users");
+        }
+        
+        String query = "DELETE FROM user WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            statement.executeUpdate();
+        }
+    }
 }
