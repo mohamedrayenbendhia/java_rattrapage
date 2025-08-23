@@ -103,54 +103,29 @@
             </Label>
          </VBox>
          
-         <!-- Right side - Holiday Information -->
-         <VBox spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" prefWidth="300.0">
+         <!-- Right side - My Messages with Status -->
+         <VBox spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);" prefWidth="450.0">
             <padding>
                <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
             </padding>
             
-            <!-- Holiday Header -->
+            <!-- Header -->
             <VBox alignment="CENTER" spacing="10.0">
-               <Text fill="#2c3e50" strokeType="OUTSIDE" strokeWidth="0.0" text="Important Information" textAlignment="CENTER">
+               <Text fill="#2c3e50" strokeType="OUTSIDE" strokeWidth="0.0" text="My Contact Messages" textAlignment="CENTER">
                   <font>
                      <Font name="System Bold" size="18.0" />
                   </font>
                </Text>
-               <Text fill="#6c757d" strokeType="OUTSIDE" strokeWidth="0.0" text="Processing times and holidays" textAlignment="CENTER">
+               <Text fill="#6c757d" strokeType="OUTSIDE" strokeWidth="0.0" text="Status of your requests" textAlignment="CENTER">
                   <font>
                      <Font size="12.0" />
                   </font>
                </Text>
             </VBox>
             
-            <!-- Processing Time Info -->
-            <VBox spacing="8.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 8; -fx-padding: 15;">
-               <Label text="⏱️ Processing Time" textFill="#495057">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-               </Label>
-               <Label text="48 hours maximum" textFill="#6c757d" wrapText="true">
-                  <font>
-                     <Font size="12.0" />
-                  </font>
-               </Label>
-            </VBox>
+            <!-- My messages list -->
+            <ListView fx:id="myContactsListView" prefHeight="400.0" />
             
-            <!-- Weekend Notice -->
-            <VBox spacing="8.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 8; -fx-padding: 15;">
-               <Label text="📅 Weekends &amp; Holidays" textFill="#495057">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-               </Label>
-               <Label text="No processing during weekends and holidays" textFill="#6c757d" wrapText="true">
-                  <font>
-                     <Font size="12.0" />
-                  </font>
-               </Label>
-            </VBox>
-
             <!-- Holidays Information -->
             <VBox spacing="8.0">
                <Label text="🎉 Upcoming Holidays 2025" textFill="#495057">

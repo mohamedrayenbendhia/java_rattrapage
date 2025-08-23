@@ -18,12 +18,13 @@ public class ContactService implements IService<Contact> {
 
     @Override
     public void ajouter(Contact contact) throws SQLException {
-        String query = "INSERT INTO contact (user_email, subject, content, created_at) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO contact (user_email, subject, content, status, created_at) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, contact.getUserEmail());
             ps.setString(2, contact.getSubject());
             ps.setString(3, contact.getContent());
-            ps.setTimestamp(4, Timestamp.valueOf(contact.getCreatedAt()));
+            ps.setString(4, contact.getStatus());
+            ps.setTimestamp(5, Timestamp.valueOf(contact.getCreatedAt()));
             ps.executeUpdate();
             System.out.println("Contact message sent successfully!");
         } catch (SQLException e) {
@@ -34,12 +35,13 @@ public class ContactService implements IService<Contact> {
 
     @Override
     public void modifier(Contact contact) throws SQLException {
-        String query = "UPDATE contact SET user_email = ?, subject = ?, content = ? WHERE id = ?";
+        String query = "UPDATE contact SET user_email = ?, subject = ?, content = ?, status = ? WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, contact.getUserEmail());
             ps.setString(2, contact.getSubject());
             ps.setString(3, contact.getContent());
-            ps.setInt(4, contact.getId());
+            ps.setString(4, contact.getStatus());
+            ps.setInt(5, contact.getId());
             ps.executeUpdate();
             System.out.println("Contact updated successfully!");
         } catch (SQLException e) {
@@ -109,12 +111,30 @@ public class ContactService implements IService<Contact> {
         return contacts;
     }
 
+    public void updateStatus(int id, String status) throws SQLException {
+        String query = "UPDATE contact SET status = ? WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, status);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+            System.out.println("Contact status updated to " + status + " for ID: " + id);
+        } catch (SQLException e) {
+            System.err.println("Error updating contact status: " + e.getMessage());
+            throw e;
+        }
+    }
+
     private Contact mapResultSetToContact(ResultSet rs) throws SQLException {
         Contact contact = new Contact();
         contact.setId(rs.getInt("id"));
         contact.setUserEmail(rs.getString("user_email"));
         contact.setSubject(rs.getString("subject"));
         contact.setContent(rs.getString("content"));
+        try {
+            contact.setStatus(rs.getString("status"));
+        } catch (SQLException ignored) {
+            // For backward compatibility if column doesn't exist
+        }
         contact.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
         return contact;
     }

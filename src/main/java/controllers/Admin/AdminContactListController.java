@@ -1,14 +1,15 @@
 package controllers.Admin;
 
 import entities.Contact;
+import entities.User;
+import entities.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import services.ContactService;
 
@@ -73,7 +74,17 @@ public class AdminContactListController implements Initializable {
         Text dateText = new Text("Sent: " + contact.getCreatedAt().format(formatter));
         dateText.setStyle("-fx-font-size: 12px; -fx-fill: #6c757d;");
         
-        header.getChildren().addAll(emailText, dateText);
+        // Status display and action
+        HBox statusBox = new HBox(8);
+        Label statusLabel = new Label("Status: ");
+        statusLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #495057;");
+        Label statusValue = new Label(contact.getStatus());
+        String color = "pending".equalsIgnoreCase(contact.getStatus()) ? "#FF9800" :
+                       ("approved".equalsIgnoreCase(contact.getStatus()) ? "#4CAF50" : "#F44336");
+        statusValue.setStyle("-fx-background-color: " + color + "; -fx-text-fill: white; -fx-padding: 2 8; -fx-background-radius: 10;");
+        statusBox.getChildren().addAll(statusLabel, statusValue);
+        
+        header.getChildren().addAll(emailText, dateText, statusBox);
         
         // Subject
         Text subjectText = new Text("Subject: " + contact.getSubject());
@@ -88,9 +99,55 @@ public class AdminContactListController implements Initializable {
         contentText.setStyle("-fx-font-size: 12px; -fx-fill: #495057; -fx-wrap-text: true;");
         contentText.setWrappingWidth(500);
         
-        card.getChildren().addAll(header, subjectText, contentText);
+        // Admin actions to change status (visible only to Admin/Super Admin)
+        User currentUser = UserSession.getInstance().getCurrentUser();
+        boolean canManage = currentUser != null && (currentUser.getRole().contains("ROLE_ADMIN") || currentUser.getRole().contains("ROLE_SUPER_ADMIN"));
+        if (canManage) {
+            HBox actions = new HBox(10);
+            Button approveBtn = new Button("Approve");
+            Button rejectBtn = new Button("Reject");
+            approveBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+            rejectBtn.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
+            boolean isPending = contact.getStatus() == null || "pending".equalsIgnoreCase(contact.getStatus());
+            approveBtn.setDisable(!isPending);
+            rejectBtn.setDisable(!isPending);
+            approveBtn.setOnAction(e -> confirmAndUpdateStatus(contact, "approved"));
+            rejectBtn.setOnAction(e -> confirmAndUpdateStatus(contact, "rejected"));
+            actions.getChildren().addAll(approveBtn, rejectBtn);
+            card.getChildren().addAll(header, subjectText, contentText, actions);
+        } else {
+            card.getChildren().addAll(header, subjectText, contentText);
+        }
         
         return card;
+    }
+
+    private void confirmAndUpdateStatus(Contact contact, String newStatus) {
+        // Prevent changing status if already approved or rejected
+        if (contact.getStatus() != null && !"pending".equalsIgnoreCase(contact.getStatus())) {
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Status Locked");
+            info.setHeaderText("No further actions allowed");
+            info.setContentText("This contact has already been " + contact.getStatus() + ".");
+            info.showAndWait();
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Confirm Status Change");
+        confirm.setHeaderText("Change contact status");
+        confirm.setContentText("Are you sure you want to set status to '" + newStatus + "'?");
+        confirm.showAndWait().ifPresent(result -> {
+            if (result == ButtonType.OK) {
+                try {
+                    contact.setStatus(newStatus);
+                    contactService.updateStatus(contact.getId(), newStatus);
+                    loadContacts();
+                } catch (SQLException e) {
+                    System.err.println("Failed to update contact status: " + e.getMessage());
+                }
+            }
+        });
     }
 
     private void loadContacts() {

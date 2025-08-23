@@ -182,7 +182,7 @@ public class ContactController implements Initializable {
 
     private void sendSMSNotification(Contact contact) {
         try {
-            String adminPhoneNumber = "+21655667940";
+            String adminPhoneNumber = "+21656225983";
             
             // Create SMS message content
             String smsMessage = String.format(

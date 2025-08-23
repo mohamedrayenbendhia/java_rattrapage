@@ -7,11 +7,13 @@ public class Contact {
     private String userEmail;
     private String subject;
     private String content;
+    private String status; // approved, pending, rejected
     private LocalDateTime createdAt;
 
     // Default constructor
     public Contact() {
         this.createdAt = LocalDateTime.now();
+        this.status = "pending";
     }
 
     // Constructor with parameters
@@ -19,6 +21,7 @@ public class Contact {
         this.userEmail = userEmail;
         this.subject = subject;
         this.content = content;
+        this.status = "pending";
         this.createdAt = LocalDateTime.now();
     }
 
@@ -51,6 +54,14 @@ public class Contact {
         return content;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public void setContent(String content) {
         this.content = content;
     }
@@ -70,6 +81,7 @@ public class Contact {
                 ", userEmail='" + userEmail + '\'' +
                 ", subject='" + subject + '\'' +
                 ", content='" + content + '\'' +
+                ", status='" + status + '\'' +
                 ", createdAt=" + createdAt +
                 '}';
     }
